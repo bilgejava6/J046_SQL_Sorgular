@@ -282,6 +282,109 @@ insert into tblkullanici(id, ad) values
 
 select * from tblkiralama
 select * from tblarac
+----------
+---- MIN , MAX 
+--- benim fiyat olarak en çok ve en az satış yaptığım kişler kimdir?
+select max(toplamfiyat) from tblkiralama
+select toplamfiyat from tblkiralama 
+where toplamfiyat is not null -- null olmayan değerleri getir
+order by toplamfiyat desc -- fiyatı en büyükten en küçüğe sırala
+limit 1 -- sadece ilk kaydı göster
+
+select min(toplamfiyat) from tblkiralama
+-----------------------
+--- herhangi bir aracımın ortalama kaç gün kirada kaldığını nasıl bulurum
+--- AVG - herhangi bir sütunun oertalamasını verir.
+select avg(kiralamasuresi) from tblkiralama where arabaid = 5
+select avg(kiralamasuresi) from tblkiralama where arabaid = 1
+select avg(kiralamasuresi) from tblkiralama where arabaid = 10
+
+select count(*) from tblkiralama where arabaid = 10
+select count(*) from tblkiralama where arabaid = 1
+select count(*) from tblkiralama where arabaid = 5
+
+--------------------------
+--- bu yıl kiralama üzerinden elde edilen toplam gelir ne kadar?
+select sum(toplamfiyat) from tblkiralama
+
+select sum(toplamfiyat) from tblkiralama where arabaid = 10
+select sum(toplamfiyat) from tblkiralama where arabaid = 1
+select sum(toplamfiyat) from tblkiralama where arabaid = 5
+----------------
+--- concat -> sütunları birleştirmek için kullanılır.
+select id, concat(ad,' ',soyad) as adsoyad from tblkullanici
+
+select concat(id, ' - ', ad) as ozelad from tblkullanici
+
+----------------
+--- length -> kolunun içindeki değerin uzunluğunu verir
+select ad, length(ad) from tblkullanici order by length(ad) desc,ad asc
+
+----------------
+-- trim -> ilgili sütundaki datanın başındaki ve sonundaki boşlukları siler.
+select * from tblkullanici
+update tblkullanici set ad = '   Muhammet    ' where id=1
+
+select trim(ad) from tblkullanici
+select ad, length(ad), length(trim(ad)) from tblkullanici
+-----------------
+--- arama yaparken ya da verileri belli bir formda almak isterken
+--- düzenleme yapmak isteriz ama verinin orjinal halininde korunmasu
+--- istenir. Burada ilgili sütun değerinin BÜYÜK yada küçük şekilde
+--- yazılmasını sağlayabiliriz.
+--- UPPER, LOWER
+select ad, upper(ad) from tblkullanici
+select * from tblkullanici where lower(ad) = 'ahmet'
+----------------------
+--- ifadelerin bazen tersten okumak gerekebilir ya da şifrelemek için 
+--- bu şkeilde almak işimze gelebilir.  bunun için
+--- REVERSE kullanırız
+select ad, reverse(ad) from tblkullanici
+
+----------------------------------
+-- ad.     |  tarih.  |    fiyat
+-- Murat    14.05.2024.  960₺
+-- Deniz    15.05.2024.  750₺
+-- Hakan    15.05.2024.  1230₺
+-- Murat    17.05.2024.  880₺
+-- Deniz    19.05.2024.  670₺
+-- Melek    19.05.2024.  2690₺
+------
+--- Bu tabloda hangi müşteri toplam kaç para ödeme yapmış?
+-- müşteri adı.  |. toplam ödeme
+-- Murat.             1840₺  
+-- Deniz.             1420₺
+-- Hakan.             1230₺
+-- Melek.             2690₺
+-------
+-- gruplama ile belli alanları tekilleştirerek diğer alanları işleme
+-- tabi tutabilirsiniz.
+select kullaniciid,sum(toplamfiyat) from tblkiralama group by kullaniciid
+order by kullaniciid
+
+select arabaid, sum(toplamfiyat) from tblkiralama group by arabaid
+order by arabaid
+
+-----------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
