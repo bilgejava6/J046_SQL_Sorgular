@@ -366,6 +366,25 @@ select arabaid, sum(toplamfiyat) from tblkiralama group by arabaid
 order by arabaid
 
 -----------------------
+-- kiralama işlemlerinde kiralama adedi, 15 ve üzerinde olan kullanıcıların
+-- listesini bulunuz?
+-- DİKKAT!!!!!
+-- where select için tabloda alanlarda yapılan kısıtlamayı tanımlar,
+-- ancak group by için kısıtlama işlemi HAVING ile yapılır.
+select kullaniciid, count(*) as kiralamaadedi from tblkiralama
+group by kullaniciid 
+having count(*)>14
+order by count(*) desc
+
+----------------------------
+----------------------------
+---- SORU:  kiralama süresi ortalaması en yüksek olan ilk 3 aracı listeleyin
+select * from tblkiralama
+
+
+
+
+
 
 
 
