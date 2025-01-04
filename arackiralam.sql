@@ -169,7 +169,15 @@ select * from tblkullanici order by ad asc -- default olarak asc aktiftir.
 -- Tabloda istenilen miktarda veriyi çekmek.
 --- LIMIT [miktar] postgreSQL
 --- TOP, oracle/plsql - msSQL/t-sql
-select * from tblkullanici 
+select * from tblkullanici order by ad limit 5
+-- en çok satılan 10 ürün
+-- yeni kayıt olan üyelerimiz.
+-- günün ürünü
+-- en büyük indirimler
+-- uygulamada en çok satın alma işlemi yapan ilk 10 müşteri
+------------------------------------
+------------------------------------
+--- 
 
 
 
