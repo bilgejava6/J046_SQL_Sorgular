@@ -151,8 +151,25 @@ select * from tblkullanici where id=4 or id=1 or id=9 or id=3
 select * from tblkullanici where il='Ankara' -- Ankara illeri listelenir
 select * from tblkullanici where il='ankara' -- büyük küçük harf duyarlı
 --------------------------------------
-
-
+---- Sorguların sıralanması
+---- ORDER BY komutu ile sırlama yapılır.
+---- SELECT * from [TABLE_NAME] ORDER BY [COLUMN_NAME]
+select * from tblkullanici order by id
+select * from tblkullanici order by ad
+---- DİKKAT!!! burada order by doğal formuna göre sırlama yapar
+---- yani [a..z] ya da [0..9] yapar peki tam tersi gerekli ise
+---- Sıralamanın yönünü belirleyebilirsiniz
+---- ASC - a..z, 0..9
+---- DESC - z..a, 9..0
+---- SELECT * from [TABLE_NAME] ORDER BY [COLUMN_NAME] [ASC or DESC]
+select * from tblkullanici order by ad desc
+select * from tblkullanici order by ad asc -- default olarak asc aktiftir.
+------------------------------------------
+------------------------------------------
+-- Tabloda istenilen miktarda veriyi çekmek.
+--- LIMIT [miktar] postgreSQL
+--- TOP, oracle/plsql - msSQL/t-sql
+select * from tblkullanici 
 
 
 
