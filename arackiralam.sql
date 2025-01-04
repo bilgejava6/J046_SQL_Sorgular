@@ -236,6 +236,47 @@ select * from tblkullanici where ad like '%ar%' limit 5
 -- ilike -> büyük küçük harf duyarlılığını ortadan kaldırır. daha kapsamlı arama 
 -- yapılabilir.
 select * from tblkullanici where ad ilike 'a%'
+--------------
+-- WHERE [COLUMN_NAME] BETWEEN [START] and [END]
+select * from tblkullanici where id>=5 and id<=25
+select * from tblkullanici where id between 5 and 25
+--------------
+-- Tablolarımızda boş bırakılmış alanları bulmak isteyebiliriz, bu işlemleri
+-- yapmak için null olan alanları bulan özel bir kodumuz var
+-- = NULL, NOT NULL, | IS NULL (değer null ise), IS NOT NULL (değer null değil ise) 
+-- adres bilgisi null olanları bulalım
+select * from tblkullanici where adres is null
+select * from tblkullanici where adres is not null
+-----
+-- bazen bazı alanları null olsa bile kayıtları listelemek isteyebiliriz.
+-- ancak bu null olan kayıtların bir şekilde düzenlenmesi de gereklidir. Bu gibi
+-- durumlarda null olan kayıtları başka bir default değer ile değiştiririz.
+-- coalesce -> null olan alanlara default değer atayarak döner.
+-- bu işlem sadece sorguda işe yarar gerçek veri üzerinde değişiklik yapmaz.
+-- coalesce sadece postgresql için geçerlidir.
+-- SQL -> ifNull, MsSQL -> isNull
+select id,ad,soyad,coalesce(adres,'Türkiye') as adres
+from tblkullanici where adres is null
+
+select * from tblkullanici
+------------------------------
+--- Özel keyword ve matematiksel işlemler
+------ count -> tablonun tamamında yada belirtilen bir sütunda var olan kayıtları
+------  sayar.
+--- adında a harfi olan kaç adet kayıt vardır?
+select count(*) as adinda_a_olanlarin_sayisi from tblkullanici where ad like '%a%'
+
+select count(*) as tablonun_sayisi from tblkullanici
+-- NOT!! eğer. saydığınız alanda null olan değerler var ise, sayım o değerleri
+-- içerisine katmaz. count(*) işlemi dahi olsa, id alanı null ise ilgili satır
+-- sayaç a eklenmez.
+--- il bilgisi null olan kaç kişi var?
+select count(*) from tblkullanici where il is null -- 14 kayıt
+--- il bilgisi dolu olan kaç kişivar?
+select count(il) from tblkullanici -- 96 kayıt
+--------------------------------
+
+
 
 
 
