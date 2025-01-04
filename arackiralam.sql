@@ -275,7 +275,13 @@ select count(*) from tblkullanici where il is null -- 14 kayıt
 --- il bilgisi dolu olan kaç kişivar?
 select count(il) from tblkullanici -- 96 kayıt
 --------------------------------
+---- 1 
+select * from tblkullanici order by id
+insert into tblkullanici(id, ad) values
+(7,'Kaan'), (8,'Demet'), (9,'Ayşe'), (10,'Uğur')
 
+select * from tblkiralama
+select * from tblarac
 
 
 
