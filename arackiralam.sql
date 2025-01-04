@@ -177,7 +177,68 @@ select * from tblkullanici order by ad limit 5
 -- uygulamada en çok satın alma işlemi yapan ilk 10 müşteri
 ------------------------------------
 ------------------------------------
---- 
+--- IN ([ARRAY_VALUES])
+--- Eğer aralarında bir bağıntı olmayan farklı id leri 
+--- listelemek isteseydiniz nasıl yapardınız?
+--- 4,98,102,21,987,432,214,655 ... 50 adet daha var
+select * from tblkullanici where id=4 or id=98 or id=102 -- ....
+select * from tblkullanici where id in (5,12,89,56,43,27,48,67)
+select * from tblkullanici where il in ('Ankara', 'Maralik', 'Labrador')
+--- INNER SELECT
+select * from tblkullanici where id in (
+	select kullaniciid from tblkiralama -- 4
+)
+----------------------------------
+----------------------------------
+--- arama işlemleri bazen net olmayacaktır, yani =(eşittir) ile arama 
+--- işlemi her zaman işimizi görmeyecek. Bu nedenle daha geniş arama 
+--- seçenmeklerine iihtiyacımız var.
+--- Örneğin, bir isim araması yaparken sadece bir kaç harfi ile arama 
+--- yapmak isteye biliriz. Instagramda arkadaş aramak gibi. İşte
+--- bu tarz, metin içerisinde arama işlemleri için;
+--- LIKE '[SEARCH_VALUE]'
+select * from tblkullanici where ad = 'Ahmet'
+select * from tblkullanici where ad like 'Ahmet'
+--- özel karaterleri ile detaylı arama imkanı sunar.
+--- [ % ] -> joker karaterdir, herhangi bir ifadenin yerine geçer. 0..n
+select * from tblkullanici where ad like 'A%'
+-- A% -> A ile başlayıp devamında herhangi bir ifade olması
+-- A, Ax, Axx, Axx...n olabilir. A ile başlayıp herhangi bir değe ile devam edebilir.
+select * from tblkullanici where ad like '%a'
+-- %a -> herhangi bir değer ile başlayıp a ile bitenler.
+-- a, xa, xxa, xx xxa, xx....na
+select * from tblkullanici where ad like '%a%' 
+-- %a% -> herhangi bir değer ile başlayıp a ile devam edip herhangi bir değer ile bitenler
+-- içinde a harfi olanlar, a, xa, xax, xxxxxxxxax, xxxxxxxaxxxx,
+select * from tblkullanici where ad like '%a%' and soyad like '%i%' -- 21
+select * from tblkullanici where ad like '%a%' or soyad like '%i%' -- 73
+select * from tblkullanici where ad like '%a%h%'
+--- [ _ ] -> alt çizgi, bu bir karakter yerine geçer.
+select * from tblkullanici where ad like '%n_' 
+-- herhangi bir değer ile başlayan,  n harfi ve devamında bir karakter ile bitenler.
+select * from tblkullanici where ad like '%a__n%'
+select * from tblkullanici where ad like '___a%'
+select * from tblkullanici where ad like '___a'
+select * from tblkullanici where ad like 'A____'
+-------------------------------------------
+-------------------------------------------
+--- örnek; intagramda al başlayan kişilerden ilk 5 ini göster
+select * from tblkullanici where ad like '%ar%' limit 5
+----------
+-- JAVA İÇİN ÖRNEK YAZDIM, SONRA İŞLEYECEĞİZ.
+-- String aranan;
+-- aranan = "yoğun";
+-- select * from tblmakale where icerik like '%[$aranan]%';
+----------
+-- arama yaparken eşitlik genelde bire bir şeklinde yapılır, ancak 
+-- günlük işlemlerde bu çok fayda sağlamaz, çünkü veriler karışık olabilir
+-- bu nedenle büyük-küçük harf duyarlılığını kontrol etmek gerekli.
+-- ilike -> büyük küçük harf duyarlılığını ortadan kaldırır. daha kapsamlı arama 
+-- yapılabilir.
+select * from tblkullanici where ad ilike 'a%'
+
+
+
 
 
 
