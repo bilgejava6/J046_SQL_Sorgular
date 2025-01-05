@@ -240,6 +240,35 @@ left join tblyazar on tblyazar.id = tblyazarkitap.yazarid
 where tblkitap.id = 37
 
 -----------
+--- hangi yazarların bizde kitabı bulunmamaktadır?
+select * from tblyazar
+insert into tblyazar(ad) values 
+('Ayfer Tunç'), ('Doğan Cüceloğlu'), ('Prof. Dr. İskender Pala')
+-------------
+--
+select * from tblyazar
+left join tblyazarkitap on tblyazarkitap.yazarid = tblyazar.id
+where tblyazarkitap.id is null
+
+-------------
+select * from tblkitap 
+insert into tblkitap(ad) values ('Test Kitap-1'), ('Test Kitap-2')
+-- yazar bilgisi olmayan kitaplar.
+select * from tblkitap
+left join tblyazarkitap on tblyazarkitap.kitapid = tblkitap.id
+where tblyazarkitap.id is null
+---------------
+--- adında i harfi geçen yazarların yazarAdı, kitapAdı şeklinde tablosunu 
+--- getiren sorguyu yazınız.
+
+select y.ad as yazar_adi, k.ad as kitap_adi from tblyazar as y
+left join tblyazarkitap as yk on yk.yazarid = y.id	
+left join tblkitap as k on yk.kitapid = k.id
+where y.ad ilike '%i%' or y.ad ilike '%İ%'
+
+-------------------
+
+
 
 
 
