@@ -379,7 +379,62 @@ order by count(*) desc
 ----------------------------
 ----------------------------
 ---- SORU:  kiralama süresi ortalaması en yüksek olan ilk 3 aracı listeleyin
-select * from tblkiralama
+select arabaid,avg(kiralamasuresi) from tblkiralama
+group by arabaid
+order by avg desc
+limit 3
+-----------------------------
+-- bizim sitemizden ürün alanlar, hangi ürünleri almışlardır?
+-- sitemizde bulunan ürünlerden hangileri hiç satılmamıştır?
+-- bizden araç kiralayan kaç farklı müşteri vardır?
+------
+select * from tblarac
+insert into tblarac(marka,model,modelyili,kapasite,kiradami)
+values ('Mercedes','Maybach',2024,4,false)
+-- Bellir bir kolonda mükerrer(tekrar eden) olan  alanları tekilleştirmek
+-- için (DISTINCT) kullanılır.
+select distinct(arabaid) from tblkiralama
+
+--------------------------
+--------------------------
+--- Tablolar arası ilişkiler
+---------- JOIN ----------
+-- [INNER] [LEFT - RIGHT - CROSS - NATURAL ] [OUTER] JOIN
+---- inner join
+---- left join
+---- right outer join
+----------------------
+--- aşağıda gördüğünüz tabloyu bir kullanıcıya göstermek ister misiniz?
+select id, kullaniciid, arabaid, tarih, toplamfiyat from tblkiralama
+------
+--- left, right join tanımı hangi tablonun önceliğinin olduğunu
+--- belirlemektir.
+--- JOIN Kullanımı
+--- öncelikle iki tabloyu bir birine bağlayacak join türünü seçin
+--- ve tabloları yazın.
+--- iki tablonun hangi sütunlarının eşleştirileceğini belirtiyorsunuz
+--- çünkü join iki tabloda yer alan alanları eşleyerek bağlantı yapar.
+select tblkullanici.ad, tblkullanici.soyad, tblarac.marka, tblarac.model,
+tblkiralama.tarih,tblkiralama.toplamfiyat
+from tblkiralama 
+left join tblkullanici
+on tblkiralama.kullaniciid = tblkullanici.id
+left join tblarac 
+on tblkiralama.arabaid = tblarac.id
+where tblkiralama.toplamfiyat is not null
+order by tblkiralama.toplamfiyat desc
+limit 3
+
+
+
+
+
+
+
+
+
+
+
 
 
 
