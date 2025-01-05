@@ -323,6 +323,84 @@ ORDER BY id desc
 -- s8- belirli bir alanda en çok eser veren yazar ve eser sayısı
 -- s9- en çok okunan/kiralanan ilk 3 kitap hangileridir?
 -----------
+-- C1-
+create view vw_yazar_kitap_listesi
+as
+select y.id as yazar_id, y.ad as yazar_ad, k.id as kitap_id,
+k.ad as kitap_ad, k.yayinevi, k.basimyili
+from tblyazar as y 
+inner join tblyazarkitap as yk on yk.yazarid = y.id
+left join tblkitap as k on yk.kitapid = k.id
+
+select * from vw_yazar_kitap_listesi where yazar_id= 7
+
+-- C3, en çok kitabı olan kişi ve kitap sayısı nedir?
+select yazar_ad, count(*) from vw_yazar_kitap_listesi
+group by yazar_ad order by count desc limit 1
+
+--------------------------
+--------------------------
+-- PostgreSQL Syntax ve komut satırları
+------
+do $$ -- kod bloğu başlangıc ,scope
+declare -- eğer yazılacak kod da değişken var ise burası eklenir.
+---- değişkenler buraya
+begin
+---- bu araya yazılması istenilen kodları yazıyoruz.
+end;
+$$ -- bitiş.
+---------------
+--- temel kullanım
+do $$
+begin
+	raise notice 'Burada bildirim yap...';
+end; $$
+--- for loop
+
+do $$
+begin
+	-- for (int i=0;i<10;i++) ... {}
+	-- System.out.printf("bir ifade %s, %d", "değer", 67)
+	for counter in 1..10 loop
+		raise notice 'döngü..: % / 10 ', counter;
+	end loop;	
+end; $$
+
+do $$
+declare 
+	dongu integer := 20;
+begin
+	for sayac in 1..dongu loop
+		insert into tblkitap(ad) values (concat('yeni kitap- ',sayac));
+	end loop;
+end; $$
+
+select * from tblkitap
+------------------------------------
+-- while loop
+-- while(condition) {
+
+-- }
+while sayac>5 loop
+ raise notice 'Selam'
+-- kodlar buraya
+end loop;
+
+--------
+-- if(..) {} else if() {}. else(){}
+if s4 > s5 then
+-- ......
+elseif s6>s7 then
+-- ......
+else 
+-- .......
+end if;
+-- !!DİKKAT!!
+-- komut saturları mutlaka do $$ end;$$ arasında olmalı begin..end
+-- blokları arasında yazılmalı.
+
+
+
 
 
 
