@@ -220,4 +220,29 @@ insert into tblyazarkonu(yazarid,konuid) values
 (8,3),(8,4),(8,5), -- 3,4,5
 (9,6); -- 6
 
+-----------------------------------------
+-----------------------------------------
+-- bir yazarın kitaplarını listeleyin.
+select ad from tblyazar where id = 9
+
+select tblyazar.ad as yazar_adi, tblkitap.ad as kitap_adi from tblyazar
+left join tblyazarkitap on tblyazar.id = tblyazarkitap.yazarid
+left join tblkitap on tblyazarkitap.kitapid = tblkitap.id
+where tblyazar.id = 9
+
+-----------------------
+-- id si 37 olan kitabın yazarı kimdir? join ile bulunuz
+select * from tblkitap where id = 37
+
+select tblkitap.ad as kitap, tblyazar.ad as yazar from tblkitap
+left join tblyazarkitap on tblkitap.id=tblyazarkitap.kitapid
+left join tblyazar on tblyazar.id = tblyazarkitap.yazarid
+where tblkitap.id = 37
+
+-----------
+
+
+
+
+
 
