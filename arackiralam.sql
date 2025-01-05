@@ -424,6 +424,9 @@ on tblkiralama.arabaid = tblarac.id
 where tblkiralama.toplamfiyat is not null
 order by tblkiralama.toplamfiyat desc
 limit 3
+------------------
+
+
 
 
 
