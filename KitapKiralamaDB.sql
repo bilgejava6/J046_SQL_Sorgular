@@ -252,7 +252,8 @@ where tblyazarkitap.id is null
 
 -------------
 select * from tblkitap 
-insert into tblkitap(ad) values ('Test Kitap-1'), ('Test Kitap-2')
+insert into tblkitap(ad) values 
+('Test Kitap-3'), ('Test Kitap-4'), ('Test Kitap-5'), ('Test Kitap-6')
 -- yazar bilgisi olmayan kitaplar.
 select * from tblkitap
 left join tblyazarkitap on tblyazarkitap.kitapid = tblkitap.id
@@ -267,6 +268,62 @@ left join tblkitap as k on yk.kitapid = k.id
 where y.ad ilike '%i%' or y.ad ilike '%İ%'
 
 -------------------
+-- YAZAR - KİTAP
+-- Tüm join türlerinin kontrolü
+-- yazar öncelikli listeleme (LEFT JOIN) - 64 kayıt - 6 BOŞ
+select * from tblyazar as y
+left join tblyazarkitap as yk on yk.yazarid = y.id
+left join tblkitap as k on yk.kitapid = k.id
+
+-- kitap öncelikli listeleme (RIGHT JOIN) - 65 kayıt - 7 BOŞ
+select * from tblyazar as y
+left join tblyazarkitap as yk on yk.yazarid = y.id
+right join tblkitap as k on yk.kitapid = k.id
+
+select * from tblkitap
+-- her yazarın mutlaka bir kitabı ve her kitabın mutlaka bir yazarı 
+-- olduğu senaryo
+-- mutlaka kitap ve yazarın kesiştiği durumlar (INNER JOIN) - 58 kayıt
+select * from tblyazar as y
+inner join tblyazarkitap as yk on yk.yazarid = y.id
+inner join tblkitap as k on yk.kitapid = k.id
+
+-- arada ilişkinin olup olmadığına bakılmaksızın tüm durumların 
+-- gösterildiği senaryo
+-- tüm alanlar tüm bağıntıları ile (FULL JOIN) - 71 kayıt
+select * from tblyazar as y
+full join tblyazarkitap as yk on yk.yazarid = y.id
+full join tblkitap as k on yk.kitapid = k.id
+
+---------------------------
+-- Yazdığımız SQL sorgularını daha sonra tekrar tüketmek ve 
+-- daha karmaşık sorguları okunaklı hale getirmek için VIEW 
+-- kullanırız.
+----
+-- yazarı olmayan kitaplar.
+create view vw_yazari_olmayan_kitaplar
+as
+select k.id, k.ad from tblkitap as k
+left join tblyazarkitap as yk on yk.kitapid = k.id
+where yk.id is null
+---------------
+
+select * from vw_yazari_olmayan_kitaplar
+where id > 63
+ORDER BY id desc
+------------------------------
+------------------------------
+-- s1- belirli bir yazarın hangi kitapları var?
+-- s2- yazarı olmayan kitaplar nelerdir?
+-- s3- en çok kitabı olan yazar kimdir?
+-- s4- belirlir bir konuda yazılmış kitaplar.
+-- s5- en çok kiralama yapan öğretmen kimdir?
+-- s6- en çok kiralama yapan okul hangisidir?
+-- s7- en çok kiralanan kitap hangisidir?
+-- s8- belirli bir alanda en çok eser veren yazar ve eser sayısı
+-- s9- en çok okunan/kiralanan ilk 3 kitap hangileridir?
+-----------
+
 
 
 
