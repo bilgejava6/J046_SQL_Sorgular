@@ -398,6 +398,95 @@ end if;
 -- !!DİKKAT!!
 -- komut saturları mutlaka do $$ end;$$ arasında olmalı begin..end
 -- blokları arasında yazılmalı.
+----------------
+--- PROCEDURE
+----------------
+-- Java void methodları gibi çalışır
+-- yani görevi yapar sonuç bilgisi sunmaz.
+-- T-SQL(MsSQL), PL-SQL(ORACLE), PL-pgSQL(PostgreSQL)
+create procedure ekranayazdir()
+language plpgsql
+as
+$$
+	begin
+		raise notice 'prodecure ilk tanımlama';
+	end;
+$$
+
+call ekranayazdir();
+---
+select * from tblokul
+--  okl-, 5 -> okl-1, okl-2, okl-3...
+create procedure okulekle(okuladi varchar, eklemeadedi integer)
+language plpgsql
+as
+$$
+	begin
+		for sayac in 1..eklemeadedi loop -- 1,2,3,4,5,6
+			insert into tblokul(ad) values(concat(okuladi,sayac));
+		end loop;		
+	end;
+$$
+
+select * from tblokul
+call okulekle('Okul-',6);
+
+-----------------
+--- FUNCTION 
+-----------------
+-- java da ki methodlar gibi işlem yapar, procedure den farklı olarak
+-- yaptığı işlemin sonucunu dönebilir.
+-----
+-- public int toplam(int a, int b){
+-- int sayi, sayi2;
+-- // body
+-- return 65;
+-- }
+create function [FUNTION_NAME]([PARAMETER_NAME] int)
+returns integer -- geriye dönülecek değerin dönüş tipini belirtiyoruz.
+language plpgsql
+as
+$$
+begin
+	return [RESULT_VALUE];
+end;
+$$
+---------
+---------
+-- en çok ödeme tutarı ile en az ödeme tutarı arasındaki fark nedir?
+create function eCeAFark()
+returns integer
+language plpgsql
+as
+$$
+	declare 
+		enbuyuk integer := 0;
+		enkucuk integer := 0;
+		fark integer := 0;
+	begin
+		-- dikkat burada aldığınz değerler tablo formatında gelecek ve 
+		-- select için geçerli olacaktır. Bu nedenle dönüştürmek gerekli
+		-- bu işlemin tabloya as ekleyerek yapabilirsiniz
+		enbuyuk := (select max(toplamtutar) from tblodeme) as integer;
+		enkucuk := (select min(toplamtutar) from tblodeme) as integer;
+		fark = enbuyuk - enkucuk;
+		-- raise notice 'fark...: %', fark;
+		return fark;
+	end;
+$$
+
+-- DİKKAT!!! function bir sonuç döndüğü için select ile 
+-- çağrım yapılabilir.
+select eCeAFark();
+
+
+select * from tblodeme
+insert into tblodeme(toplamtutar) 
+values (120.00),(245.00),(188.00),(250.00),
+(750.00),(660.00), (990.00),(590.00)
+
+-----------------
+-----------------
 
 
 
